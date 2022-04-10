@@ -61,9 +61,9 @@ Module {
 }
 ```
 
-Y de este objeto la propiedad que más no interesa es la de `exports` que es la que nos permitira exportar nuestras funciones o variables y poder usarlar en cualquier parte del proyecto.
+Y de este objeto la propiedad que más no interesa es  `exports`, nos permitirá exportar nuestras funciones o variables y poder usarlas en cualquier parte del proyecto.
 
-Si eres curioso y quieres visualizar por tu cuenta lo que devuelve el objeto `Module {...}`en tu máquina solo vasta con hacer un `console.log(module)`. 
+Si eres curioso y quieres visualizar por tu cuenta lo que devuelve el objeto `Module {...}`en tu máquina solo basta con hacer un `console.log(module)`. 
 
 
 #### 3 Formas de exportar código 
