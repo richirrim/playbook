@@ -66,6 +66,202 @@ Y de este objeto la propiedad que más no interesa es la de `exports` que es la 
 Si eres curioso y quieres visualizar por tu cuenta lo que devuelve el objeto `Module {...}`en tu máquina solo vasta con hacer un `console.log(module)`. 
 
 
-#### 3 Formas de exportar código 
+#### Formas de exportar código 
 
-#### Usando la forma abreviada o alias para exportar código 
+##### Exportarndo directamente un método.
+
+```js
+// File: info.js
+const info = function (name, currentAge) {
+  return `
+    NINJA, ${name.toUpperCase()}
+    ${'------'.repeat(5)}
+    Edad Actual: ${currentAge}
+  `
+}
+
+// Exportación
+module.exports = info
+```
+```js
+// File: main.js / Importación
+const ninjaInfo  = require('./modules/info.js') 
+const itachi = ninjaInfo('Itachi Uchiha', 21)
+
+console.log(itachi) 
+// Output:
+/*
+  NINJA, ITACHI UCHIHA
+  ------------------------------
+  Edad Actual: 21
+*/
+```
+Ahora, una curiosidad, antes de continuar. Puedes usar la función `require()` directamente sin necesidad de guardarla antes en alguna variable.
+
+```js
+console.log(
+  require('./modules/info.js')('Naruto Uzumaki', 32)
+)
+// Output:
+/*
+  NINJA, NARUTO UZUMAKI
+  ------------------------------
+  Edad Actual: 32
+*/
+```
+O pasando la función a exportar en la misma línea de exportación.
+
+```js
+// File: info.js / Exportación 
+module.exports = function info (name, currentAge) {
+  return `
+    NINJA, ${name.toUpperCase()}
+    ${'------'.repeat(5)} 
+    Edad Actual: ${currentAge}
+  `
+}
+```
+```js
+// File: main.js / Importación
+const ninja = require('./info.js') 
+console.log(ninja('Itachi Uchiha', 21))
+// Output:
+/*
+  NINJA, ITACHI UCHIHA
+  ------------------------------
+  Edad Actual: 21
+*/
+```
+###### La forma abreviada (alias)
+Ahora, existe una forma más resumida de exportar. Y es usando simplemente `exports` en vez de `module.exports`. Y claro, su uso va a depender de con cuál te sientas más comod@ o del equipo con el que estés.
+
+Pero algo que debes tener en cuenta es o utilizas una manera o la otra, pero nunca las combines. ¿Por qué? Problemas de exportación y de referencias.
+
+```js
+// Exportación
+// Bad
+// exports = function msj () {
+//   return 'Deberas (:'
+// }
+
+// Good
+exports.msj = function msj () {
+  return 'Deberas (:'
+}
+```
+
+##### Exportar un objeto con diferentes métodos
+
+```js
+// File: info.js
+const info = function (name, currentAge) {
+  return `
+    NINJA, ${name.toUpperCase()}
+    ${'------'.repeat(5)}
+    Edad Actual: ${currentAge}
+  `
+}
+
+const msj = function () {
+  return 'Deberas (:'
+}
+
+// Exportación
+// Usar el objeto exports para exportar 
+// métodos no funciona.
+/* 
+  exports = {
+    info,
+    msj
+  }
+*/
+// La única solución para que jale, seria agregando 
+// los métodos como valor de una propiedad del objeto.
+/*
+  exports.msj = function msj () {
+    return 'Deberas (:'
+  }
+
+  exports.info = function info (name, currentAge) {
+    return `
+      NINJA, ${name.toUpperCase()}
+      ${'------'.repeat(5)}
+      Edad Actual: ${currentAge}
+    `
+  }
+*/
+
+// O usando la propiedad exports del objeto module.
+module.exports = {
+  info,
+  msj
+}
+```
+
+```js
+// File: main.js / Importación
+const ninja  = require('./modules/info.js') 
+const itachi = ninja.info('Itachi Uchiha', 21)
+
+console.log(itachi) 
+console.log(ninja.msj())
+// Output:
+/*
+    NINJA, ITACHI UCHIHA
+    ------------------------------
+    Edad Actual: 21
+
+  Deberas (:
+*/
+```
+##### Exportando métodos como propiedades del objeto exports
+```js
+// File: info.js
+const info = function (name, currentAge) {
+  return `
+    NINJA, ${name.toUpperCase()}
+    ${'------'.repeat(5)}
+    Edad Actual: ${currentAge}
+  `
+}
+
+const msj = function () {
+  return 'Deberas (:'
+}
+
+// Exportación
+exports.info = info
+exports.msj = msj
+```
+```js
+// File: main.js / Importación
+const ninja  = require('./modules/info.js') 
+const itachi = ninja.info('Itachi Uchiha', 21)
+
+console.log(itachi) 
+console.log(ninja.msj())
+// Output:
+/*
+    NINJA, ITACHI UCHIHA
+    ------------------------------
+    Edad Actual: 21
+
+  Deberas (:
+*/
+```
+
+Por último, es clave mencionar que `module.exports` tiene más peso, lo escribas antes o después del objeto `exports` lo que hará es sobreescribir todas las exportaciones que estén con `exports`.
+
+Example:
+```js
+// File: example.js | Exportación
+exports = "eso ya lo veremos.";
+module.exports = "Esto anula todo lo demás.";
+```
+```js
+// File: main.js | Importanción
+const otia = require('./modules/example.js');
+console.log(otia);
+
+// Output: Esto anula todo lo demás.
+```
