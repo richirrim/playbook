@@ -65,6 +65,8 @@ Y de este objeto la propiedad que más no interesa es  `exports`, nos permitirá
 
 Si eres curioso y quieres visualizar por tu cuenta lo que devuelve el objeto `Module {...}`en tu máquina solo basta con hacer un `console.log(module)`. 
 
+🍇Tip: Recuerda usar muchos 'console.log', tantos como puedas. Normalmente cuando uno está estudiando suelen aparecer cosas que están muy borrosas pero créeme al usar console.log() como, si no, hubiera mañana te iluminara, te alegrara el alma, y verás tan claro, más haya  del velo, que todo tendrá mucho más sentido que antes.
+
 
 #### Formas de exportar código 
 
